@@ -1,0 +1,7 @@
+.viewer{
+    width: 80%;
+    height: 30px;;
+    margin: center;
+    background: linear-gradient(to right, red, rgb(83, 5, 5));
+    border-radius: 5px
+}

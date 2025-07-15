@@ -30,8 +30,5 @@ public with sharing class CaseTriggerHandler {
        if(System.isQueueable()){
             System.debug('Executado por Apex Job');
         }
-        else{
-            CaseHelper.CasePriorityService(this.newRecords);
-        }
     }
 }

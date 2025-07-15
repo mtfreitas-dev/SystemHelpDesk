@@ -1,0 +1,122 @@
+<template>
+    <!-- Cartão Lightning para organizar o layout do componente -->
+    <!-- Lightning card to organize the component layout -->
+    <lightning-card>
+
+        <!-- Título do cartão com um ícone SVG personalizado -->
+        <!-- Card title with a custom SVG icon -->
+        <span slot="title" class="card-title">
+            <img src={svgUrl} alt="Ícone SLA" class="custom-icon" />
+            Edit Case
+        </span>
+
+        <!-- Exibe o formulário de entrada quando nenhum caso estiver carregado -->
+        <!-- Display the input form when no case is loaded -->
+        <template if:false={cases}>
+            <div class="slds-m-around_medium">
+                <!-- Campo de entrada para o número do caso -->
+                <!-- Input field for the case number -->
+                <lightning-input label="Number of Case" type="text" value={caseNumber}
+                    onchange={handleInputChange} required></lightning-input>
+
+                <!-- Botão para buscar o caso -->
+                <!-- Button to search for the case -->
+                <lightning-button variant="brand" label="Search case" type="submit"
+                    onclick={handleSearch}></lightning-button>
+            </div>
+        </template>
+
+        <!-- Exibe os dados do(s) caso(s) quando controller for verdadeiro -->
+        <!-- Displays case data when controller is true -->
+        <template if:true={controller}>
+            <div class="slds-m-around_medium">
+                <!-- Loop para exibir cada caso retornado -->
+                <!-- Loop to display each returned case -->
+                <template for:each={cases} for:item="caseItem">
+                    <div key={caseItem.Id} class="slds-box slds-box_xx-small slds-m-bottom_medium slds-theme_default">
+
+                        <!-- Número do Caso -->
+                        <!-- Case Number -->
+                        <p class="slds-text-title_bold slds-text-color_brand">Case Number:</p>
+                        <div class="slds-box slds-box_xx-small slds-m-bottom_small">
+                            <p class="slds-text-body_regular">{caseItem.CaseNumber}</p>
+                        </div>
+
+                        <!-- Assunto do Caso -->
+                        <!-- Case Subject -->
+                        <p class="slds-text-title_bold slds-text-color_brand">Subject of Case:</p>
+                        <div class="slds-box slds-box_xx-small slds-m-bottom_small">
+                            <p class="slds-text-body_regular">{caseItem.Subject}</p>
+                        </div>
+
+                        <!-- Descrição do Caso -->
+                        <!-- Case Description -->
+                        <p class="slds-text-title_bold slds-text-color_brand">Description of Case:</p>
+                        <div class="slds-box slds-box_xx-small">
+                            <p class="slds-text-body_regular">{caseItem.Description}</p>
+                        </div>
+
+                        <!-- Status do Caso -->
+                        <!-- Case Status -->
+                        <p class="slds-text-title_bold slds-text-color_brand">Status of Case:</p>
+                        <div class="slds-box slds-box_xx-small">
+                            <p class="slds-text-body_regular">{caseItem.Status}</p>
+                        </div>
+
+                        <!-- Urgência (campo personalizado) -->
+                        <!-- Urgency (custom field) -->
+                        <p class="slds-text-title_bold slds-text-color_brand">Urgency of Case:</p>
+                        <div class="slds-box slds-box_xx-small">
+                            <p class="slds-text-body_regular">{caseItem.Urgency__c}</p>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Botões para editar o caso ou iniciar nova busca -->
+                <!-- Buttons to edit the case or start a new search -->
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col">
+                        <lightning-button variant="brand" label="Edit Case" onclick={handleEditOn}></lightning-button>
+                    </div>
+                    <div class="slds-col">
+                        <lightning-button label="New Search" onclick={newSearch}></lightning-button>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Exibe o formulário de edição quando edit for verdadeiro -->
+        <!-- Displays the edit form when edit is true -->
+        <template if:true={edit}>
+            <div class="slds-m-around_medium">
+                <!-- Formulário de edição do caso usando lightning-record-edit-form -->
+                <!-- Case edit form using lightning-record-edit-form -->
+                <lightning-record-edit-form object-api-name="Case" record-id={id} onsuccess={handleSuccess}
+                    onsubmit={handleSubmit}>
+
+                    <!-- Campos editáveis do Caso -->
+                    <!-- Editable Case fields -->
+                    <lightning-input-field field-name="Subject" required data-id="subject"></lightning-input-field>
+                    <lightning-input-field field-name="Status" required data-id="status"></lightning-input-field>
+                    <lightning-input-field field-name="Description" required data-id="description"></lightning-input-field>
+                    <lightning-input-field field-name="Urgency__c" required data-id="urgency"></lightning-input-field>
+                    <lightning-input-field field-name="Email__c" required data-id="email"></lightning-input-field>
+
+                    <!-- Botões de ação: salvar ou cancelar -->
+                    <!-- Action buttons: save or cancel -->
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col">
+                            <lightning-button type="submit" label="Salvar" class="slds-m-top_medium" onclick={salved}>
+                            </lightning-button>
+                        </div>
+                        <div class="slds-col">
+                            <lightning-button variant="brand" type="submit" label="Cancelar" class="slds-m-top_medium"
+                                onclick={canceledEdition}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                </lightning-record-edit-form>
+            </div>
+        </template>
+    </lightning-card>
+</template>

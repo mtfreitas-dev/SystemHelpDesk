@@ -25,13 +25,11 @@ public with sharing class AccountHelper {
     
     public static void isValidCNPJ(List<Account> newRecods){
 
-        List<String> cnpjList = new List<String>();
-
         for(Account acc : newRecods){
             if(acc.CNPJ__c == null || acc.CNPJ__c.length() != 14){
+                acc.addError('The CNPJ must have at least 14 characters');
             }
             else{
-                cnpjList.add(acc.CNPJ__c);
                 String cnpj = acc.CNPJ__c;
                 Integer[] weight1 = new Integer[]{5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
                 Integer [] weight2 = new Integer[]{6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
@@ -45,6 +43,7 @@ public with sharing class AccountHelper {
                             
                         if(rest < 2) rest = 0; else rest = 11 - rest;
                         if(rest == 10) rest = 1; if(rest == 11) rest = 0;
+                        System.debug('Primeiro Digito' + rest);
                         if(rest != Integer.valueOf(cnpj.substring(12, 13))){
                             acc.addError('Invalid CNPJ');
                         }
@@ -57,6 +56,7 @@ public with sharing class AccountHelper {
                         Integer rest = Math.mod(sum2, 11);
                         if(rest < 2) rest = 0; else rest = 11 - rest;
                         if(rest == 10) rest = 1; if(rest == 11) rest = 0;
+                        System.debug('Segundo Digito' + rest);
                         if(rest != Integer.valueOf(cnpj.substring(13, 14))){
                             acc.addError('Invalid CNPJ');
                         }

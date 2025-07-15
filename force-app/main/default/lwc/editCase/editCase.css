@@ -1,0 +1,13 @@
+.custom-icon {
+    width: 40px; 
+    height: 40px;
+    margin: 10px
+}
+
+lightning-input {
+    margin: 7px;
+}
+
+lightning-button {
+    margin: 20px 0 0 40%;
+}

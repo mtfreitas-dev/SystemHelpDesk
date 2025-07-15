@@ -6,39 +6,29 @@ public with sharing class CaseHelper {
     public static void validCase(List<Case> caseList) {        
 
         for(Case c : caseList){
-            if(c.Origin != 'Web Form'){
-                if(c.Description == null || c.Description == '' && c.Subject == null || c.Subject == '' && c.Urgency__c == null || c.ContactEmail == null || c.ContactEmail == ''){
-                    c.addError('Please fill in the Subject, Description, Urgency and Email fields');
-               }
-               else{
-                   c.Status = 'New';
-               } 
+            if(c.Name__c == null || c.Surname__c == null || c.Description == null || c.Description == '' && c.Subject == null || c.Subject == '' && c.Urgency__c == null || c.Category__c == null  && c.Type == null || c.Type == null || c.Email__c == null ){
+                c.addError('Please fill in the Subject, Description, Urgency and Email fields');
             }
             else{
-                if(c.SuppliedEmail == null || c.SuppliedEmail == '' || c.SuppliedPhone == null || c.SuppliedPhone == '' || c.Description == null || c.Description == '' || c.Subject == null || c.Subject == '' || c.Urgency__c == null){
-                    c.addError('Please fill in the Subject, Description, Urgency and Email fields');
-                }
-                else{
-                    c.Status = 'New';
-                }
-            }
+                c.Status = 'New';
+                c.SlaResponse__c = 3;
+            } 
         }
 
-        ValideContact(caseList);
+        valideContact(caseList);
         CasePriorityService(caseList);
     }
 
     //Valida se os contatos que foram informados existem baseado no e-mail, caso não exista aciona o método createnewContact para criar um novo contato
     // Validates whether the contacts that were entered exist based on the email, if not, it triggers the createnewContact method to create a new contact
 
-    public static void ValideContact(List<Case> caseList){
+    public static void valideContact(List<Case> caseList){
 
         List<String> emailList = new List<String>();
 
         for(Case cc : caseList){
-            if(cc.SuppliedEmail != null || cc.SuppliedName != ''){
-                System.debug('cc.SuppliedEmail ' + cc.SuppliedEmail);
-                emailList.add(cc.SuppliedEmail);
+            if(cc.Email__c != null){
+                emailList.add(cc.Email__c);
             }
         }
 
@@ -47,7 +37,7 @@ public with sharing class CaseHelper {
         if(existingContactList.size() > 0){
             for(Case cc :caseList){
                 for(Contact cont : existingContactList){
-                    if(cc.SuppliedEmail == cont.Email){
+                    if(cc.Email__c == cont.Email){
                         cc.ContactId = cont.Id;            
                     }
                 }
@@ -78,7 +68,7 @@ public with sharing class CaseHelper {
         List<Contact> contactList = new List<Contact>();
 
         for(Case cc : caseList){
-            Contact contact = new Contact(FirstName = cc.SuppliedName, LastName = ' - Forms', Email= cc.SuppliedEmail, Phone = cc.SuppliedPhone);
+            Contact contact = new Contact(FirstName = cc.Name__c, LastName = cc.Surname__c, Email= cc.Email__c);
                 cc.ContactId = contact.Id;
                 contactList.add(contact);
         }
@@ -92,43 +82,47 @@ public with sharing class CaseHelper {
     //Automatically classify calls into priorities and define a handling time (SLA) based on their characteristics.
 
     public static void CasePriorityService(List<Case> caseList) {
+        
         for (Case cc : caseList) {
+            if( cc.SLA__c != null){
+                System.debug('SLA PREENCHIDO');
+            } else if(cc.SLA__c == null) {
+                Decimal score = 0;
 
-            Decimal score = 0;
+                Map<String, Decimal> urgencyScores = new Map<String, Decimal>{'High' => 5, 'Average' => 3, 'Low' => 1};
 
-            Map<String, Decimal> urgencyScores = new Map<String, Decimal>{'High' => 5, 'Average' => 3, 'Low' => 1};
+                Map<String, Decimal> categoryMap = new Map<String, Decimal>{'Backup' => 4, 'Email' => 3, 'User Management' => 3, 'Internet' => 4, 'Software' => 2, 'Hardware' => 2};
 
-            Map<String, Decimal> categoryMap = new Map<String, Decimal>{'Backup' => 4, 'Email' => 3, 'User Management' => 3, 'Internet' => 4, 'Software' => 2, 'Hardware' => 2};
+                Map<String, Decimal> typeMap = new Map<String, Decimal>{'Incident' => 3, 'Request' => 2, 'Problem' => 3, 'Preventive' => 2, 'Deployment' => 2};
 
-            Map<String, Decimal> typeMap = new Map<String, Decimal>{'Incident' => 3, 'Request' => 2, 'Problem' => 3, 'Preventive' => 2, 'Deployment' => 2};
+                if(cc.Urgency__c != null){
+                    score += urgencyScores.get(cc.Urgency__c);
+                }
 
-            if(cc.Urgency__c != null){
-                score += urgencyScores.get(cc.Urgency__c);
-            }
+                if(cc.Type != null){
+                    score += typeMap.get(cc.Type);
+                }
 
-            if(cc.Type != null){
-                score += typeMap.get(cc.Type);
-            }
+                if(cc.Category__c != null){
+                    score += categoryMap.get(cc.Category__c);
+                }
+                if(cc.PremiumCustomer__c){
+                    score += 2.5;
+                }
 
-            if(cc.Category__c != null){
-                score += categoryMap.get(cc.Category__c);
-            }
-            if(cc.PremiumCustomer__c){
-                score += 2.5;
-            }
-
-            if (score >= 10) {
-                cc.Priority = 'P1';
-                cc.SLA__c = 4;
-            } else if (score > 9) {
-                cc.Priority = 'P2';
-                cc.SLA__c = 6;
-            } else if (score > 7) {
-                cc.Priority = 'P3';
-                cc.SLA__c = 8;
-            } else {
-                cc.Priority = 'P4';
-                cc.SLA__c = 12;
+                if(score <= 5){
+                    cc.Priority = 'P4';
+                    cc.SLA__c = 12;
+                } else if (score <= 7){
+                    cc.Priority = 'P3';
+                   cc.SLA__c = 8;
+                } else if(score <= 9){
+                    cc.Priority = 'P2';
+                    cc.SLA__c = 6;
+                } else if(score >= 10){
+                    cc.Priority = 'P1';
+                    cc.SLA__c = 4;
+                }
             }
         }
     }

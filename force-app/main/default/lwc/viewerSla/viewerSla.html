@@ -1,5 +1,92 @@
 <template>
-    <lightning-card title="SLA">
-        <div class="viewer">  SLA 2.0</div>
+    <!-- Cartão principal que exibe o SLA do chamado -->
+    <!-- Main card displaying the case SLA -->
+    <lightning-card>
+
+        <!-- Título do cartão com ícone SVG personalizado -->
+        <!-- Card title with custom SVG icon -->
+        <span slot="title" class="card-title">
+            <img src={svgUrl} alt="Ícone SLA" class="custom-icon" />
+            Ticket SLA
+        </span>
+
+        <!-- Separador visual -->
+        <!-- Visual separator -->
+        <div class="separator"></div>
+
+        <!-- Se o atendimento ainda não foi iniciado (check = false) -->
+        <!-- If the service has not started yet (check = false) -->
+        <template if:false={check}>
+
+            <!-- Barra de progresso circular indicando o SLA restante -->
+            <!-- Circular progress bar showing remaining SLA -->
+            <div class="slds-m-around_medium">
+                <p style="text-align: center;">Time remaining to start the service</p>
+                <lightning-progress-bar value={valueSlaR} variant="circular"></lightning-progress-bar>
+            </div>
+
+            <!-- Botão para iniciar o atendimento -->
+            <!-- Button to start the service -->
+            <div class="button">
+                <lightning-button
+                    variant="neutral"
+                    label="Start Service"
+                    onclick={handleStart}
+                    class="slds-m-left_x-small"
+                    style="margin:auto; margin-top: 16px">
+                </lightning-button>
+            </div>
+        </template>
+
+        <!-- Se o atendimento já foi iniciado (check = true) -->
+        <!-- If the service has already started (check = true) -->
+        <template if:true={check}>
+
+            <!-- Se o SLA estiver pausado -->
+            <!-- If the SLA is paused -->
+            <template if:true={pause}>
+                <!-- Botão para retomar o SLA -->
+                <!-- Button to resume SLA -->
+                <p style="text-align: center; margin: 10px">SLA Paused</p>
+                <div class="button">
+                    <lightning-button
+                        variant="neutral"
+                        label="Resume Service"
+                        onclick={resumeSLA}
+                        class="slds-m-left_x-small"
+                        style="margin:auto; margin-top: 16px">
+                    </lightning-button>
+                </div>
+            </template>
+
+            <!-- Se o SLA estiver em andamento -->
+            <!-- If the SLA is running -->
+            <template if:false={pause}>
+                <div class="slds-m-around_medium">
+
+                    <p style="text-align: center;">Time remaining for service</p>
+
+                    <!-- Barra de progresso circular do SLA em tempo real -->
+                    <!-- Circular progress bar showing live SLA -->
+                    
+                    <lightning-progress-bar
+                        variant="circular"
+                        value={valueSla}>
+                    </lightning-progress-bar>
+
+                    <!-- Botão para pausar o SLA -->
+                    <!-- Button to pause SLA -->
+                    <div class="button">
+                        <lightning-button
+                            variant="neutral"
+                            label="Pause SLA"
+                            onclick={pauseSLA}
+                            class="slds-m-left_x-small"
+                            style="margin:auto; margin-top: 16px">
+                        </lightning-button>
+                    </div>
+                </div>
+            </template>
+        </template>
     </lightning-card>
 </template>

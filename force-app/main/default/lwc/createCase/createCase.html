@@ -1,0 +1,84 @@
+<template>
+    <!-- Cartão Lightning que contém o conteúdo principal -->
+    <!-- Lightning card that holds the main content -->
+    <lightning-card>
+
+        <!-- Título do cartão com ícone SVG personalizado -->
+        <!-- Card title with custom SVG icon -->
+        <span slot="title" class="card-title">
+            <img src={svgUrl} alt="Ícone SLA" class="custom-icon" />
+            New Ticket
+        </span>
+
+        <!-- Botão para iniciar a criação do chamado, mostrado quando 'create' é falso -->
+        <!-- Button to start ticket creation, shown when 'create' is false -->
+        <template if:false={create}>
+            <lightning-button
+                class="slds-m-top_small"
+                label="Create Ticket"
+                onclick={handleCreate}>
+            </lightning-button>
+        </template>
+
+        <!-- Formulário exibido quando 'create' é verdadeiro -->
+        <!-- Form displayed when 'create' is true -->
+        <template if:true={create}>
+            <div class="slds-m-around_medium">
+
+                <!-- Formulário de criação de chamado para o objeto Case -->
+                <!-- Ticket creation form for the Case object -->
+                <lightning-record-edit-form
+                    object-api-name="Case"
+                    onsuccess={handleSuccess}>
+
+                    <!-- Campo: Nome (obrigatório) -->
+                    <!-- Field: Name (required) -->
+                    <lightning-input-field field-name="Name__c" required></lightning-input-field>
+
+                    <!-- Campo: Sobrenome (obrigatório) -->
+                    <!-- Field: Surname (required) -->
+                    <lightning-input-field field-name="Surname__c" required></lightning-input-field>
+
+                    <!-- Campo: E-mail (obrigatório) -->
+                    <!-- Field: Email (required) -->
+                    <lightning-input-field field-name="Email__c" required></lightning-input-field>
+
+                    <!-- Campo: Assunto (obrigatório) -->
+                    <!-- Field: Subject (required) -->
+                    <lightning-input-field field-name="Subject" required></lightning-input-field>
+
+                    <!-- Campo: Descrição (obrigatório) -->
+                    <!-- Field: Description (required) -->
+                    <lightning-input-field field-name="Description" required></lightning-input-field>
+
+                    <!-- Campo: Urgência (obrigatório) -->
+                    <!-- Field: Urgency (required) -->
+                    <lightning-input-field field-name="Urgency__c" required></lightning-input-field>
+
+                    <!-- Campo: Categoria (obrigatório) -->
+                    <!-- Field: Category (required) -->
+                    <lightning-input-field field-name="Category__c" required></lightning-input-field>
+
+                    <!-- Campo: Tipo (obrigatório) -->
+                    <!-- Field: Type (required) -->
+                    <lightning-input-field field-name="Type" required></lightning-input-field>
+
+                    <!-- Botões para enviar o formulário ou cancelar a criação do caso-->
+                    <!-- Button to submit the form or or cancel creating a case-->
+
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col">
+                            <lightning-button class="slds-m-top_small" type="submit" label="New Ticket">
+                    </lightning-button>
+                        </div>
+                        <div class="slds-col">
+                            <lightning-button class="slds-m-top_small" label="Cancel" onclick={cancel}> 
+                            </lightning-button>
+                        </div>
+                    </div>
+                </lightning-record-edit-form>
+            </div>
+        </template>
+        
+    </lightning-card>
+</template>

@@ -1,7 +1,38 @@
-.viewer{
-    margin: auto;
-    background: linear-gradient(to right, red, rgb(83, 5, 5));
-    border-radius: 5px;
-    width: 100%;
-    height: 100%;
+:host {
+    font-family: "Salesforce Sans", Arial, sans-serif;
+}
+.container2 {
+    display: flex; /* Usa flexbox para organizar os elementos lado a lado */
+    justify-content: center; /* Centraliza os elementos no container */
+    align-items: center; /* Alinha verticalmente */
+    padding: 10px;
+    color: grey;
+    font-weight: bold;
+    margin: 0; 
+}
+
+.viewerSlaR, .viewer, .viewerSlaR2 {
+    width: 50%; /* Permite que as divs ajustem seu tamanho automaticamente */
+    height: 30px; /* Ajuste conforme necessário */
+    padding: 5px;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 0; /* Remove espaçamentos extras */
+}
+
+.button{
+    display: flex; /* Garante que cada div fique em uma linha separada */
+    justify-items: center; /* Centraliza os elementos horizontalmente */
+    align-items: center;
+}
+
+.custom-icon {
+    width: 40px; 
+    height: 40px;
+    margin: 10px;
+}
+
+.separator {
+    border-bottom: 2px solid #dcdcdc; /* Cor e espessura do traço */
+    margin: 4px 16px 0 16px; /* Espaçamento para não encostar nas bordas */
 }

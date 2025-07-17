@@ -41,7 +41,8 @@ public with sharing class CaseControl {
     @AuraEnabled
     public static void updateCases(Id caseId, Boolean startService, Boolean pauseSlA){
 
-        //Consulta ao caso com os campos a serem atualizados
+        try {
+            //Consulta ao caso com os campos a serem atualizados
         //Querying the case with fields to be updated
         Case cc = [SELECT Id, StartService__c, Description, Subject, Urgency__c, SLAPaused__c, ContactId FROM Case WHERE Id = :caseId];
 
@@ -52,11 +53,10 @@ public with sharing class CaseControl {
 
         //Bloco try-catch para tratar possíveis erros de DML
         //Try-catch block to handle potential DML errors
-        try {
             update cc;
-        } catch (DmlException e) {
+        } catch (Exception e) {
             System.debug('Erro ' + e.getMessage());
-            throw new AuraHandledException('O Id do chamado não pode estar vazio.' + e.getMessage());
+            throw new AuraHandledException('Error updating case' + e.getMessage());
         }
     }
 }

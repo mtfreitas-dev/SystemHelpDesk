@@ -33,6 +33,7 @@ export default class ViewerSla extends LightningElement {
   pause;
   message;
   messageSLA;
+  dataTrue;
 
   /**
    * Busca os dados do caso usando getRecord e calcula os valores de SLA com base nos campos.
@@ -49,11 +50,13 @@ export default class ViewerSla extends LightningElement {
       this.pause = getFieldValue(this.data, CASE_SLAPAUSED__C);
       this.valueSla = Math.min((getFieldValue(this.data, CASE_SLA__C) / 12) * 100, 100);
       this.message = 'SLA: ' + getFieldValue(this.data, CASE_SLA__C) + ' Hours remaining';
+      this.dataTrue = true;
     } else if (error) {
       this.data = undefined;
       this.error = error;
     }
   }
+  //style="margin:auto; margin-top: 16px
 
   // Getters para facilitar o acesso aos campos do objeto Case
   // Getters to simplify access to Case fields
@@ -67,7 +70,28 @@ export default class ViewerSla extends LightningElement {
    * Inicia ou cancela o atendimento e atualiza os campos no servidor via Apex.
    * Starts or cancels the service and updates fields via Apex.
    */
+
+  renderedCallback() {
+    if (this.dataTrue) {
+      const progressBar = this.template.querySelector('lightning-progress-bar');
+
+      if (progressBar) {
+        const testeR = getFieldValue(this.data, CASE_SLARESPONSE__C);
+
+        if (testeR >= 2.5) {
+          progressBar.variant = 'success'; // ✅ verde
+        } else if (testeR >= 1.5) {
+          progressBar.variant = 'warning'; // ✅ amarelo
+        } else {
+          progressBar.variant = 'error'; // ✅ vermelho
+        }
+      }
+    }
+  }
+
+
   handleStart() {
+
     if (this.check != true) {
       this.check = true;
     } else if (this.check != false) {

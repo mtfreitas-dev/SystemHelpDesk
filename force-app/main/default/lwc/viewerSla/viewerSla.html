@@ -18,22 +18,20 @@
         <!-- If the service has not started yet (check = false) -->
         <template if:false={check}>
 
-            <!-- Barra de progresso circular indicando o SLA restante -->
-            <!-- Circular progress bar showing remaining SLA -->
             <div class="slds-m-around_medium">
-                <p style="text-align: center;">Time remaining to start the service</p>
-                <lightning-progress-bar value={valueSlaR} variant="circular"></lightning-progress-bar>
+                <p style="text-align: center; font-family: 'Salesforce Sans', Arial, sans-serif; font-size: 0.875rem;">
+                    Time remaining to start service: {valueSlaR}% remaining</p>
             </div>
 
-            <!-- Botão para iniciar o atendimento -->
-            <!-- Button to start the service -->
+            <!-- Barra de progresso circular indicando o SLA restante -->
+            <!-- Circular progress bar showing remaining SLA -->
+            <div class="progress-wrapper">
+                <lightning-progress-bar value={valueSlaR} variant="circular" class="custom-shadow"></lightning-progress-bar>
+            </div>
+
             <div class="button">
-                <lightning-button
-                    variant="neutral"
-                    label="Start Service"
-                    onclick={handleStart}
-                    class="slds-m-left_x-small"
-                    style="margin:auto; margin-top: 16px">
+                <lightning-button variant="neutral" label="Start Service" onclick={handleStart}
+                    style="margin:auto; margin-top: 7px;" class="elevated-button">
                 </lightning-button>
             </div>
         </template>
@@ -49,12 +47,8 @@
                 <!-- Button to resume SLA -->
                 <p style="text-align: center; margin: 10px">SLA Paused</p>
                 <div class="button">
-                    <lightning-button
-                        variant="neutral"
-                        label="Resume Service"
-                        onclick={resumeSLA}
-                        class="slds-m-left_x-small"
-                        style="margin:auto; margin-top: 16px">
+                    <lightning-button variant="neutral" label="Resume Service" onclick={resumeSLA}
+                        class="elevated-button" style="margin:auto; margin-top: 16px">
                     </lightning-button>
                 </div>
             </template>
@@ -68,20 +62,14 @@
 
                     <!-- Barra de progresso circular do SLA em tempo real -->
                     <!-- Circular progress bar showing live SLA -->
-                    
-                    <lightning-progress-bar
-                        variant="circular"
-                        value={valueSla}>
+
+                    <lightning-progress-bar variant="circular" value={valueSla}>
                     </lightning-progress-bar>
 
                     <!-- Botão para pausar o SLA -->
                     <!-- Button to pause SLA -->
                     <div class="button">
-                        <lightning-button
-                            variant="neutral"
-                            label="Pause SLA"
-                            onclick={pauseSLA}
-                            class="slds-m-left_x-small"
+                        <lightning-button variant="neutral" label="Pause SLA" onclick={pauseSLA} class="elevated-button"
                             style="margin:auto; margin-top: 16px">
                         </lightning-button>
                     </div>

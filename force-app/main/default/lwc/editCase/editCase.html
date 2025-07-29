@@ -22,7 +22,7 @@
                 <!-- Botão para buscar o caso -->
                 <!-- Button to search for the case -->
                 <lightning-button variant="brand" label="Search case" type="submit"
-                    onclick={handleSearch}></lightning-button>
+                    onclick={handleSearch} class="elevated-button"></lightning-button>
             </div>
         </template>
 
@@ -76,10 +76,10 @@
                 <!-- Buttons to edit the case or start a new search -->
                 <div class="slds-grid slds-gutters">
                     <div class="slds-col">
-                        <lightning-button variant="brand" label="Edit Case" onclick={handleEditOn}></lightning-button>
+                        <lightning-button variant="brand" label="Edit Case" onclick={handleEditOn} class="elevated-button"></lightning-button>
                     </div>
                     <div class="slds-col">
-                        <lightning-button label="New Search" onclick={newSearch}></lightning-button>
+                        <lightning-button label="New Search" onclick={newSearch} class="elevated-button"></lightning-button>
                     </div>
                 </div>
             </div>
@@ -106,11 +106,11 @@
                     <!-- Action buttons: save or cancel -->
                     <div class="slds-grid slds-gutters">
                         <div class="slds-col">
-                            <lightning-button type="submit" label="Salvar" class="slds-m-top_medium" onclick={salved}>
+                            <lightning-button type="submit" label="Salvar" class="elevated-button" onclick={salved}>
                             </lightning-button>
                         </div>
                         <div class="slds-col">
-                            <lightning-button variant="brand" type="submit" label="Cancelar" class="slds-m-top_medium"
+                            <lightning-button variant="brand" type="submit" label="Cancelar" class="elevated-button"
                                 onclick={canceledEdition}>
                             </lightning-button>
                         </div>

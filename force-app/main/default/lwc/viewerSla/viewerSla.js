@@ -44,11 +44,11 @@ export default class ViewerSla extends LightningElement {
     if (data) {
       this.data = data;
       this.error = undefined;
-      this.valueSlaR = Math.min((getFieldValue(this.data, CASE_SLARESPONSE__C) / 3) * 100, 100);
+      this.valueSlaR = Math.round(Math.min((getFieldValue(this.data, CASE_SLARESPONSE__C) / 3) * 100, 100));
       this.messageSLAr = 'Time remaining until first appointment ' + getFieldValue(this.data, CASE_SLARESPONSE__C) + ' Hours'
       this.check = getFieldValue(this.data, CASE_STARTSERVICE__C);
       this.pause = getFieldValue(this.data, CASE_SLAPAUSED__C);
-      this.valueSla = Math.min((getFieldValue(this.data, CASE_SLA__C) / 12) * 100, 100);
+      this.valueSla = Math.round(Math.min((getFieldValue(this.data, CASE_SLA__C) / 12) * 100, 100));
       this.message = 'SLA: ' + getFieldValue(this.data, CASE_SLA__C) + ' Hours remaining';
       this.dataTrue = true;
     } else if (error) {
@@ -73,22 +73,36 @@ export default class ViewerSla extends LightningElement {
 
   renderedCallback() {
     if (this.dataTrue) {
-      const progressBar = this.template.querySelector('lightning-progress-bar');
+      const progressBar = this.template.querySelector('.slds-progress-bar__value');
 
       if (progressBar) {
-        const testeR = getFieldValue(this.data, CASE_SLARESPONSE__C);
 
-        if (testeR >= 2.5) {
-          progressBar.variant = 'success'; // ✅ verde
-        } else if (testeR >= 1.5) {
-          progressBar.variant = 'warning'; // ✅ amarelo
+        if (this.check === false) {
+
+          progressBar.style.width = `${this.valueSlaR}%`
+
+          if (this.valueSlaR >= 75) {
+            progressBar.style.backgroundColor = 'green'; // ✅ verde
+          } else if (this.valueSlaR >= 30) {
+            progressBar.style.backgroundColor = 'yellow'; // ✅ amarelo
+          } else {
+            progressBar.style.backgroundColor = 'red'; // ✅ vermelho
+          }
         } else {
-          progressBar.variant = 'error'; // ✅ vermelho
+
+          progressBar.style.width = `${this.valueSla}%`
+
+          if (this.valueSla >= 75) {
+            progressBar.style.backgroundColor = 'green'; // ✅ verde
+          } else if (this.valueSla >= 30) {
+            progressBar.style.backgroundColor = 'yellow'; // ✅ amarelo
+          } else {
+            progressBar.style.backgroundColor = 'red'; // ✅ vermelho
+          }
         }
       }
     }
   }
-
 
   handleStart() {
 

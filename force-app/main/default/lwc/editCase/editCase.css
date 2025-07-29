@@ -11,3 +11,15 @@ lightning-input {
 lightning-button {
     margin: 20px 0 0 40%;
 }
+
+.elevated-button {
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.elevated-button:hover {
+  transform: translateY(-3px);
+}

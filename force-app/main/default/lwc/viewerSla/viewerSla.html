@@ -25,8 +25,12 @@
 
             <!-- Barra de progresso circular indicando o SLA restante -->
             <!-- Circular progress bar showing remaining SLA -->
-            <div class="progress-wrapper">
-                <lightning-progress-bar value={valueSlaR} variant="circular" class="custom-shadow"></lightning-progress-bar>
+            <div class="slds-p-around_medium">
+                <div class="slds-progress-bar" style="width: 100%; background-color: #f3f3f3; border-Radius: 10px">
+                    <span class="slds-progress-bar__value">
+                        <span class="slds-assistive-text">Progresso</span>
+                    </span>
+                </div>
             </div>
 
             <div class="button">
@@ -63,8 +67,14 @@
                     <!-- Barra de progresso circular do SLA em tempo real -->
                     <!-- Circular progress bar showing live SLA -->
 
-                    <lightning-progress-bar variant="circular" value={valueSla}>
-                    </lightning-progress-bar>
+                    <div class="slds-p-around_medium">
+                        <div class="slds-progress-bar"
+                            style="width: 100%; background-color: #f3f3f3; border-Radius: 10px">
+                            <span class="slds-progress-bar__value">
+                                <span class="slds-assistive-text">Progresso</span>
+                            </span>
+                        </div>
+                    </div>
 
                     <!-- Botão para pausar o SLA -->
                     <!-- Button to pause SLA -->

@@ -25,23 +25,25 @@ public with sharing class CalcSLA implements Queueable{
             }
 
             //Calcular SLA
-            if (c.StartService__c == true) {
-                if (c.SLAPaused__c == false) {
-                    if (c.DatePause__c != null) {
-                        Long diffMillisPausa = System.now().getTime() - c.DatePause__c.getTime();
-                        Decimal diffHorasPausa = Decimal.valueOf(diffMillisPausa) / (1000 * 60 * 60);
-                        c.SLA__c += diffHorasPausa;
-                        c.DateUnpause__c = System.now();
-                    }
-                    c.SLA__c -= diffHoras;
-                    System.debug('SLA FINAL ' + c.SLA__c);
+            if(c.StartService__c == true){
+                if(c.DateUnpause__c != null){
+                    Long miliInPause =   c.DateUnpause__c.getTime() - c.DatePause__c.getTime();
+                    Decimal timeInPause = Decimal.valueOf(miliInPause) / (1000 * 60 * 60); 
+                    Decimal finishTime = diffHoras - timeInPause;
+
+                    c.Sla__c = c.Sla__c - finishTime;
+                    c.DateUnpause__c = null;
+                    
                 } else {
-                    System.debug('Chamado pausado: ' + c.CaseNumber);
+                    c.Sla__c = c.Sla__c - diffHoras;
+
+                    if(c.Sla__c <= 0){
+                        c.Sla__c = 0;                
+                    }
                 }
             }
         }
 
         update caseList;
-    }
-        
+    }       
 }

@@ -14,7 +14,7 @@
         <!-- Button to start ticket creation, shown when 'create' is false -->
         <template if:false={create}>
             <lightning-button
-                class="slds-m-top_small"
+                class="elevated-button"
                 label="Create Ticket"
                 onclick={handleCreate}>
             </lightning-button>
@@ -68,11 +68,11 @@
 
                     <div class="slds-grid slds-gutters">
                         <div class="slds-col">
-                            <lightning-button class="slds-m-top_small" type="submit" label="New Ticket">
+                            <lightning-button class="elevated-button" type="submit" label="New Ticket">
                     </lightning-button>
                         </div>
                         <div class="slds-col">
-                            <lightning-button class="slds-m-top_small" label="Cancel" onclick={cancel}> 
+                            <lightning-button class="elevated-button" label="Cancel" onclick={cancel}> 
                             </lightning-button>
                         </div>
                     </div>

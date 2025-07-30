@@ -34,14 +34,6 @@
   margin: auto;
 }
 
-.custom-bar::part(bar) {
-    background-color: lightgray; /* Cor do fundo da barra */
-}
-
-.custom-bar::part(progress) {
-    background-color: red; /* Cor da parte preenchida */
-}
-
 .elevated-button {
   border: none;
   cursor: pointer;
@@ -63,4 +55,9 @@
 .separator {
     border-bottom: 2px solid #dcdcdc; /* Cor e espessura do traço */
     margin: 4px 16px 0 16px; /* Espaçamento para não encostar nas bordas */
+}
+
+.slds-progress-bar__value{
+    border-Radius: 10px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }

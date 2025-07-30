@@ -1,30 +1,51 @@
 # Sistema de HelpDesk
 
-Este projeto é um sistema de helpdesk desenvolvido na Salesforce, permitindo a abertura de chamados por e-mail e a comunicação entre atendentes e clientes via e-mail.
+Sistema de Help Desk desenvolvido com Lightning Web Components (LWC) e Apex, executado na plataforma Salesforce. Ele permite o registro, visualização, edição e acompanhamento de chamados (tickets), com monitoramento de SLAs.
 
 ## 🚀 Funcionalidades
 
-📌 Abertura de chamados automaticamente via formulário web.
+🕒 Visualização de SLA – Acompanha o tempo restante ou excedido do SLA para cada chamado.
 
-📌 Comunicação entre atendentes e clientes diretamente pelo e-mail.
+➕ Criação de chamados – Formulário interativo com campos obrigatórios, categorias e envio.
 
-📌 Gerenciamento de chamados dentro da plataforma Salesforce.
+📝 Formulário Web - Formulário Web para criação de chamados utilizando Web-To-Case.
 
-📌 Automação de respostas e notificações para clientes e equipe de suporte.
+✏️ Edição de chamados – Permite atualizar informações, status, datas e observações dos tickets.
 
-📌 Automação de cálculo de prioridad e SLA.
+⚙️ Automação com Triggers – Regras automáticas executadas durante a criação ou atualização de tickets.
 
-📌 Componentes Lighting da Web para exibição de dados.
+🧪 Cobertura com Classes de Teste – Verificação de integridade e cobertura de código para deploy seguro. 
 
 
 ## 🛠️ Tecnologias Utilizadas
 
-- [Salesforce Apex](https://developer.salesforce.com/)
-- [GitHub Actions](https://docs.github.com/en/actions)
-- ...
+Salesforce Lightning Web Components (LWC)
 
-## 📦 Instalação e Configuração
+Apex (triggers, classes de serviço, filas assíncronas)
 
-1. Clone o repositório:
-   ```sh
-   git clone https://github.com/seu-usuario/seu-repositorio.git
+SOQL/SOSL para consultas
+
+Salesforce Objects (Case, objetos customizados para SLA, Pausa, etc.)
+
+GitHub Wiki para documentação
+
+## 📁 Estrutura do projeto
+
+📦 Lightning Web Components (LWC)
+
+| Componente      | Descrição                                                      |
+| --------------- | -------------------------------------------------------------- |
+| `SlaViewer`     | Exibe o tempo de SLA restante com barra de progresso dinâmica. |
+| `TicketCreator` | Formulário de criação de chamados.                             |
+| `TicketEditor`  | Permite editar dados dos tickets existentes.                   |
+
+⚙️ Apex (Backend)
+📜 Classes Apex
+
+| Classe                | Função                                                                       |
+| --------------------- | ---------------------------------------------------------------------------- |
+| `CalcSLA`             | Classe `Queueable` que calcula e atualiza o tempo restante de SLA dos casos. |
+| `EmailServiceHandler` | Responsável por processar chamados recebidos por e-mail (se houver).         |
+| `TicketManager`       | Executa regras de negócio e manipulação de dados dos tickets.                |
+
+                                                                                  |

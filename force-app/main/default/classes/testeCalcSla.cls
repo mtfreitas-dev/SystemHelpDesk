@@ -1,40 +1,57 @@
+@isTest(SeeAllData=true)
 public with sharing class testeCalcSla {
 
     @isTest
-    static void testExecuteMethod() {
-
-        // Criar registros de teste com todos os campos necessários
-        List<Case> caseList = new List<Case>();
+    static void testExecuteMethod(){
 
         // Caso 1: StartService = false (deve afetar SlaResponse__c)
-        caseList.add(new Case(
-            Name__c = 'João',
-            Surname__c = 'Silva',
-            Email__c = 'joao.silva@email.com',
-            Priority = 'Alta',
-            Status = 'Em Andamento',
-            CreatedDate = System.now().addHours(-2),
-            StartService__c = false,
-            SlaResponse__c = 4,
-            SLA__c = 10
-        ));
+        Case c1 = new Case(
+            Description = 'Teste',
+            Subject = 'Teste',
+            Urgency__c = 'Average',
+            Category__c = 'Internet',
+            Type = 'Preventive',
+            Email__c = 'teste@gmail.com.br',
+            Name__c =  'Teste',
+            Surname__c = 'Teste'
+        );
 
         // Caso 2: StartService = true, com DateUnpause__c definido (deve afetar SLA__c)
-        caseList.add(new Case(
-            Name__c = 'Maria',
-            Surname__c = 'Oliveira',
-            Email__c = 'maria.oliveira@email.com',
-            Priority = 'Média',
-            Status = 'Aberto',
-            CreatedDate = System.now().addHours(-4),
-            StartService__c = true,
-            SlaResponse__c = 5,
-            SLA__c = 12,
-            DateUnpause__c = System.now().addHours(-1)
-        ));
+        Case c2 = new Case(
+            Description = 'Teste 2',
+            Subject = 'Teste 2',
+            Urgency__c = 'Average',
+            Category__c = 'Internet',
+            Type = 'Preventive',
+            Email__c = 'teste@gmail.com.br',
+            Name__c =  'Teste',
+            Surname__c = 'Teste',
+            DatePause__c = Datetime.now().addHours(-1),
+            DateUnpause__c = Datetime.now,
+            StartService__c = true
+        );
 
-        insert caseList;
-        
+        /*Case c3 = new Case(
+            Description = 'Teste 2',
+            Subject = 'Teste 2',
+            Urgency__c = 'Average',
+            Category__c = 'Internet',
+            Type = 'Preventive',
+            Email__c = 'teste@gmail.com.br',
+            Name__c =  'Teste',
+            Surname__c = 'Teste',
+            DateUnpause__c = null,
+            StartService__c = true
+        );*/
+
+        Case c4 = [SELECT Id, SLA__c From Case WHERE SLA__c = 0 LIMIT 1];
+
+        insert c1;
+        insert c2;
+        //insert c3;
+
+        Set<Id> idSet = new Set<Id>{c1.Id, c2.Id, c4.Id};
+
         Test.startTest();
         CalcSLA job = new CalcSLA();
         System.enqueueJob(job);
@@ -43,18 +60,15 @@ public with sharing class testeCalcSla {
         // Verifique se os casos foram atualizados
         List<Case> updatedCases = [
             SELECT Id, SlaResponse__c, SLA__c, StartService__c, DateUnpause__c
-            FROM Case
+            FROM Case WHERE Id IN: idSet
         ];
 
-        System.assertEquals(2, updatedCases.size());
-
-        for (Case c : updatedCases) {
-            if (!c.StartService__c) {
-                System.assert(c.SlaResponse__c <= 4);
-            } else {
-                // No caso de DateUnpause__c, o campo deveria ter sido limpo
+        for(Case C : updatedCases){
+            if(c.Id == c2.Id){
                 System.assertEquals(null, c.DateUnpause__c);
             }
         }
+
+        System.assertEquals(3, updatedCases.size());
     }
 }

@@ -27,14 +27,14 @@ public with sharing class CalcSLA implements Queueable{
             //Calcular SLA
             if(c.StartService__c == true){
                 if(c.DateUnpause__c != null){
-                    Decimal miliDateUnpase =  Decimal.valueOf(c.CreatedDate.getTime() - c.DateUnpause__c.getTime());
-                    Decimal diffHorasSla = miliDateUnpase - c.CreatedDate.getTime();
-                    c.Sla__c = c.Sla__c - diffHorasSla;
+                    Long miliInPause =   c.DateUnpause__c.getTime() - c.DatePause__c.getTime();
+                    Decimal timeInPause = Decimal.valueOf(miliInPause) / (1000 * 60 * 60); 
+                    Decimal finishTime = diffHoras - timeInPause;
+
+                    c.Sla__c = c.Sla__c - finishTime;
                     c.DateUnpause__c = null;
                     
-                }
-
-                if(c.DateUnpause__c != null){
+                } else {
                     c.Sla__c = c.Sla__c - diffHoras;
 
                     if(c.Sla__c <= 0){

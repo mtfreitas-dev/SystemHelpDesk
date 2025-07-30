@@ -1,4 +1,4 @@
-@isTest public with sharing class testeContactTrigger {
+@isTest public with sharing class testContactTrigger {
 
     @isTest static void testcheckEmailExisting(){
         Contact cc = new Contact(

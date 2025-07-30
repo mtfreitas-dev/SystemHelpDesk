@@ -1,4 +1,4 @@
-@isTest public with sharing class testeAccountTrigger {
+@isTest public with sharing class testAccountTrigger {
 
     @isTest static void testvalidateRegistaredCnpj(){
         Account cc = new Account(Name = 'AdvanTI', CNPJ__C = '56993890000134');

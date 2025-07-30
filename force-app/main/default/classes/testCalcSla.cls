@@ -1,5 +1,5 @@
 @isTest(SeeAllData=true)
-public with sharing class testeCalcSla {
+public with sharing class testCalcSla {
 
     @isTest
     static void testExecuteMethod(){

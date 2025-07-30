@@ -27,30 +27,18 @@ public with sharing class testeCalcSla {
             Name__c =  'Teste',
             Surname__c = 'Teste',
             DatePause__c = Datetime.now().addHours(-1),
-            DateUnpause__c = Datetime.now,
+            DateUnpause__c = Datetime.now(),
             StartService__c = true
         );
 
-        /*Case c3 = new Case(
-            Description = 'Teste 2',
-            Subject = 'Teste 2',
-            Urgency__c = 'Average',
-            Category__c = 'Internet',
-            Type = 'Preventive',
-            Email__c = 'teste@gmail.com.br',
-            Name__c =  'Teste',
-            Surname__c = 'Teste',
-            DateUnpause__c = null,
-            StartService__c = true
-        );*/
 
-        Case c4 = [SELECT Id, SLA__c From Case WHERE SLA__c = 0 LIMIT 1];
+        Case c3 = [SELECT Id, SLA__c From Case WHERE SLA__c = 0 LIMIT 1];
 
         insert c1;
         insert c2;
         //insert c3;
 
-        Set<Id> idSet = new Set<Id>{c1.Id, c2.Id, c4.Id};
+        Set<Id> idSet = new Set<Id>{c1.Id, c2.Id, c3.Id};
 
         Test.startTest();
         CalcSLA job = new CalcSLA();

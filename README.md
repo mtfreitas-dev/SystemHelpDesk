@@ -117,7 +117,98 @@ Cobertura de código com foco em garantir a integridade da lógica e conformidad
 
 ## 📌 Como Executar
 
-> Este projeto está hospedado em uma **org Salesforce**. Você pode:
+> Este projeto está hospedado em uma **org Salesforce**.
+
+## ⚙️ Configuração Prévia Obrigatória
+
+Este projeto depende criticalmente da existência de campos e valores de lista de seleção (picklist) específicos em sua org Salesforce. Execute os passos abaixo **ANTES de fazer o deploy do código**.
+
+---
+
+### Passo 1: Criar Campos Customizados nos Objetos
+
+**No Objeto Account:**
+
+| Label  | API Name   | Tipo     | Detalhes                 |
+|--------|------------|----------|-------------------------|
+| Active | Active__c  | Picklist | Valores: No, Yes        |
+| CNPJ   | CNPJ__c    | Texto    | Tamanho: 18 caracteres  |
+
+**No Objeto Case (Ocorrência):**
+
+| Label           | API Name        | Tipo        | Detalhes                                       |
+|-----------------|----------------|------------|-----------------------------------------------|
+| Category        | Category__c     | Picklist   | Valores: Backup, Email, User Management, Internet, Software, Hardware, Printer |
+| Date Pause      | DatePause__c    | Data/Hora  | -                                             |
+| Date Unpause    | DateUnpause__c  | Data/Hora  | -                                             |
+| Email           | Email__c        | Email      | -                                             |
+| Finish SIA      | FinishSia__c    | Data/Hora  | -                                             |
+| Name            | Name__c         | Texto      | -                                             |
+| Surname         | Surname__c      | Texto      | -                                             |
+| SIA             | SIA__c          | Número     | Escala: 2, Dígitos: 2                         |
+| SIA Response    | SiaResponse__c  | Número     | Escala: 2, Dígitos: 16                        |
+| SIA Paused      | SiaPaused__c    | Caixa de seleção | -                                           |
+| Start Service   | StartService__c | Caixa de seleção | -                                           |
+| Vigency         | Vigency__c      | Picklist   | Valores: Average, High, Low                   |
+
+---
+
+### Passo 2: Configurar Valores de Lista de Seleção em Campos Nativos
+
+O projeto também utiliza os seguintes valores em campos padrões do Salesforce. Atualize os seguintos campos no objeto Case:
+
+**Campo Type (Tipo):**
+
+- Deployment
+- Incident
+- Preventive
+- Problem
+- Request
+
+**Campo Origin (Origem):**
+
+- Phone
+- Email
+- Web
+- Web Form
+
+---
+
+### Passo 3: Verificar Permissões
+
+Certifique-se de que o usuário que fará o deploy do código tem permissão de **Personalizar Aplicação (Customize Application)**.
+
+> Após o deploy, será necessário atribuir os **Permission Sets** gerados pelo pacote aos usuários finais.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 - Clonar o repositório
 - Criar uma Scratch Org com `sfdx`

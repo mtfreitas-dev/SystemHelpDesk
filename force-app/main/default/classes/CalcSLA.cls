@@ -7,7 +7,6 @@ public with sharing class CalcSLA implements Queueable{
     public void execute(QueueableContext context) {
         List<Case> caseList = [SELECT Id, Name__c, Email__c, CaseNumber, Surname__c, SlaResponse__c, SLAPaused__c, StartService__c, CreatedDate, DatePause__c, DateUnpause__c, Priority, SLA__c, Status, FinishSla__c FROM Case WHERE Status != 'Closed' AND Status != Null AND SLA__c != Null AND Name__c != Null AND Surname__c != Null AND Email__c != Null];
 
-        System.debug('CaseList ' + caseList);
         
         for(Case c : caseList){
             

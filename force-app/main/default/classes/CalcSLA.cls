@@ -10,11 +10,12 @@ public with sharing class CalcSLA implements Queueable{
         
         for(Case c : caseList){
             
-            Long diffMillis =   System.now().getTime() - c.CreatedDate.getTime(); // Diferença em milissegundos
-            Decimal diffHoras = Decimal.valueOf(diffMillis) / (1000 * 60 * 60); // Converte para horas
+            Long diffMillis =   System.now().getTime() - c.CreatedDate.getTime(); // Diferença em milissegundos || Difference in milliseconds
+            Decimal diffHoras = Decimal.valueOf(diffMillis) / (1000 * 60 * 60); // Converte para horas || convert to hours
 
 
-            //Calcular o SLA Response 
+            //Calcular o SLA Response
+            // Calculate SLA Response
             if(c.StartService__c == false){
                 c.SlaResponse__c = c.SlaResponse__c - diffHoras;
                 
@@ -24,6 +25,7 @@ public with sharing class CalcSLA implements Queueable{
             }
 
             //Calcular SLA
+            //Calculate SLA
             if(c.StartService__c == true){
                 if(c.DateUnpause__c != null){
                     Long miliInPause =   c.DateUnpause__c.getTime() - c.DatePause__c.getTime();

@@ -117,9 +117,9 @@ Cobertura de código com foco em garantir a integridade da lógica e conformidad
 
 ## 📌 Como Executar
 
-> Este projeto está hospedado em uma **org Salesforce**.
+Este projeto deve ser hospedado em uma **org Salesforce**.
 
-## ⚙️ Configuração Prévia Obrigatória
+### ⚙️ Configuração Prévia Obrigatória
 
 Este projeto depende criticalmente da existência de campos e valores de lista de seleção (picklist) específicos em sua org Salesforce. Execute os passos abaixo **ANTES de fazer o deploy do código**.
 
@@ -178,12 +178,44 @@ O projeto também utiliza os seguintes valores em campos padrões do Salesforce.
 
 Certifique-se de que o usuário que fará o deploy do código tem permissão de **Personalizar Aplicação (Customize Application)**.
 
-> Após o deploy, será necessário atribuir os **Permission Sets** gerados pelo pacote aos usuários finais.
+Após o deploy, será necessário atribuir os **Permission Sets** gerados pelo pacote aos usuários finais.
 
+### 🚀 Instalação e Deploy
 
+Após confirmar que TODOS os campos e picklists acima foram criados e configurados, prossiga com a instalação do código:
 
+```bash
+# 1. Clone o repositório
+git clone https://github.com/mtfreitas-dev/SystemHelpDesk.git
+cd SystemHelpDesk
 
+# 2. Autentique-se na sua org de desenvolvimento (alias: myDevOrg)
+sfdx auth:web:login -s -a myDevOrg
 
+# 3. Realize o deploy dos metadados
+sfdx force:source:deploy -p ./force-app/main/default -u myDevOrg
+```
+
+### ❌ Solução de Problemas Comuns
+
+### Erro no Deploy: `"No such column 'Category__c' on entity 'Case'"`
+
+- **Causa:** O campo customizado `Category__c` não foi criado no objeto `Case`.
+- **Solução:** Volte ao Passo 1 e crie todos os campos customizados listados.
+
+---
+
+### Erro: `"Invalid picklist value: Hardware in field: Category"`
+
+- **Causa:** O valor `Hardware` não existe na lista de seleção do campo `Category__c`.
+- **Solução:** Edite o campo `Category__c` e adicione o valor **missing** à picklist.
+
+---
+
+### App não funciona como esperado após a instalação
+
+- **Causa:** Valores **missing** nos campos nativos `Type` ou `Origin`.
+- **Solução:** Verifique e complete a configuração dos picklists nativos no Passo 2.
 
 
 
